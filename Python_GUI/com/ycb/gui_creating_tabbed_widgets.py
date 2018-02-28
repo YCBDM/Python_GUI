@@ -14,6 +14,7 @@ class ToolTip(object):
         self.id = None
         self.x = self.y = 0
 
+# 在提示框中设置如何显示字体
     def showtip(self, text):
         "Display text in tooltip window"
         self.text = text
@@ -36,18 +37,20 @@ class ToolTip(object):
         if tw:
             tw.destroy()
 
+# 创建工具提示的函数。我们调用创建工具提示的函数，然后将引用传递给当鼠标悬停在小部件上时，我们希望显示小部件和文本。
+def createToolTip(widget, text):
+    toolTip = ToolTip(widget)
 
-    def createToolTip(widget, text):
-        toolTip = ToolTip(widget)
+    def enter(event):
+        toolTip.showtip(text)
 
-        def enter(event):
-            toolTip.showtip(text)
+    def leave(event):
+        toolTip.hidetip()
 
-        def leave(event):
-            toolTip.hidetip()
+    widget.bind('<Enter>', enter)
+    widget.bind('<Leave>', leave)
 
-        widget.bind('<Enter>', enter)
-        widget.bind('<Leave>', leave)
+
 ##############################################################
 
 win = tk.Tk()
@@ -60,6 +63,14 @@ tabControl.add(tab1, text='Tab 1')  # 添加一个tab
 tab2 = ttk.Frame(tabControl)
 tabControl.add(tab2, text='Tab 2')
 tabControl.pack(expand=1, fill="both")   # 使包可见
+tab3 = ttk.Frame(tabControl)
+tabControl.add(tab3, text='Tab 3')
+tabControl.pack(expand=1, fill="both")   # 使包可见
+tab3 = tk.Frame(tab3, bg='blue')
+tab3.pack()
+for orangeColor in range(2):
+    canvas = tk.Canvas(tab3, width=150, height=80, highlightthickness=0, bg='orange')
+    canvas.grid(row=orangeColor, column=orangeColor)
 ####################################################################
 # 添加一个菜单栏
 menuBar = Menu(win)
@@ -110,6 +121,8 @@ ttk.Label(monty, text="Enter a name:").grid(column=0, row=0, sticky='W')
 scrolW = 30; scrolH = 3
 scr = scrolledtext.ScrolledText(monty, width=scrolW, height=scrolH, wrap=tk.WORD)
 scr.grid(column=0, sticky='WE', columnspan=3)
+# 我们调用创建工具提示的函数，然后将引用传递给当鼠标悬停在小部件上时，我们希望显示小部件和文本。
+createToolTip(scr, 'This is a ScrolledText widget.')
 
 # Spinbox callback
 def _spin():
@@ -124,7 +137,7 @@ spin.grid(column=0, row=2)
 # 注意与第一个spinbox对比
 spin = Spinbox(monty, values=(0, 50, 100), width=5, bd=20, relief=tk.GROOVE, command=_spin)
 spin.grid(column=1, row=2)
-
+createToolTip(spin, 'This is a Spin control.')
 
 ###################################################################
 # 增加一个monty2，然后添加三个复选框
@@ -175,5 +188,6 @@ scr.grid(column=0, sticky='WE',  columnspan=3)
 # curRad.grid(column=col, row=6, sticky=tk.W, columnspan=3)
 # labelsFrame.grid(column=0, row=7)
 ################################################################
+
 
 win.mainloop()

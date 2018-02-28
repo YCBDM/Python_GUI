@@ -2,7 +2,7 @@ import tkinter as tk
 
 from tkinter import ttk    # 添加一个组件
 from tkinter import scrolledtext
-from tkinter import Menu
+from tkinter import Menu,Spinbox
 from tkinter import messagebox as mBox
 
 
@@ -10,6 +10,9 @@ win = tk.Tk()
 win.title("YCB's GUI")
 win.resizable(2, 10)
 
+# 定义一个模块级的全局变量
+GLOBAL_CONST = 42
+print(GLOBAL_CONST)
 # 添加一个菜单栏
 menuBar = Menu(win)
 win.configure(menu=menuBar)
@@ -61,6 +64,18 @@ aLabel.grid(column=1, row=1, sticky=tk.W)
 name = tk.StringVar()  # 使用tkinter必须声明变量名作为类型，因为他不属于python语言
 nameEntered = ttk.Entry(monty, width=12, textvariable=name).grid(column=2, row=1)
 # nameEntered.focus()   # 游标现在默认驻留在文本输入框中
+
+def _spin():
+    value = spin.get()
+    print(value)
+    scr.insert(tk.INSERT, value + '\n')
+
+spin = Spinbox(monty, from_=0, to=10, width=5, bd=8, relief=tk.RIDGE, command=_spin)
+spin.grid(column=0, row=2)
+
+# 注意与第一个spinbox对比
+spin = Spinbox(monty, values=(0, 50, 100), width=5, bd=20, relief=tk.GROOVE, command=_spin)
+spin.grid(column=1, row=2)
 
 
 def clickMe():
@@ -149,4 +164,8 @@ ttk.Label(labelsFrame, text="label3").grid(column=2, row=0)
 def _msgBox():
     mBox.showinfo('Python Message Info Box', 'A Python GUI created using tkinter:\nThe year is 2018.')
 ##########################################################
+# 如何从组件中取数据
+strData = spin.get()   # 只需要一个get函数
+print("Spinbox value" + strData)
+
 win.mainloop()

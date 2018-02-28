@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 # 使用多行（多列)
 from tkinter import *
+import tkinter as tk      # 导入tkinter模块别名为tk
 
+win = tk.Tk()
 root = Tk()
 # 创建如下布局（一个字符占用一个grid位置）
 # A  E
@@ -21,6 +23,18 @@ lbB.grid(row=1, column=0)
 lbC.grid(row=1, column=1)
 lbD.grid(row=2, column=0, columnspan=5)
 lbE.grid(row=0, column=2)
+
+# 练习从tk里面存取数据
+strVar = tk.StringVar()
+strVar.set('hello ycb!')
+varData = strVar.get()
+print(varData)
+print(tk.IntVar())
+print(tk.IntVar().get())
+print(tk.DoubleVar())
+print(tk.DoubleVar().get())
+print(tk.BooleanVar())
+print(tk.BooleanVar().get())
 
 root.mainloop()
 # A与B、D的区别，它左边已改变，由于使用了两个表格；
